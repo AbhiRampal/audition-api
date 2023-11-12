@@ -53,6 +53,14 @@ dependencies {
     implementation "org.springframework.cloud:spring-cloud-starter-circuitbreaker-reactor-resilience4j"
     implementation "org.springframework.cloud:spring-cloud-starter-config"
     implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${springdocVersion}"
+    implementation "org.springframework.boot:spring-boot-starter-validation:3.0.6"
+    implementation 'org.jetbrains:annotations:24.0.0'
+    implementation 'io.opentelemetry:opentelemetry-api:1.31.0'
+    implementation 'io.opentelemetry:opentelemetry-sdk:1.31.0'
+    implementation 'io.opentelemetry:opentelemetry-sdk-trace:1.31.0'
+    implementation 'io.opentelemetry.javaagent:opentelemetry-javaagent:1.31.0'
+    implementation 'io.opentelemetry.instrumentation:opentelemetry-spring-starter:1.16.0-alpha'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
 
     developmentOnly "org.springframework.boot:spring-boot-devtools"
     runtimeOnly "io.micrometer:micrometer-registry-prometheus"

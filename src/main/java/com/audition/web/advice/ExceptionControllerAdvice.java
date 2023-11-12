@@ -39,6 +39,7 @@ public class ExceptionControllerAdvice extends ResponseEntityExceptionHandler {
     @ExceptionHandler(Exception.class)
     ProblemDetail handleMainException(final Exception e) {
         // TODO Add handling for Exception
+        logger.logErrorWithException(LOG, e.getMessage(), e);
         final HttpStatusCode status = getHttpStatusCodeFromException(e);
         return createProblemDetail(e, status);
 
@@ -47,6 +48,7 @@ public class ExceptionControllerAdvice extends ResponseEntityExceptionHandler {
     @ExceptionHandler(SystemException.class)
     ProblemDetail handleSystemException(final SystemException e) {
         // TODO `Add Handling for SystemException
+        logger.logHttpStatusCodeError(LOG, e.getMessage(), e.getStatusCode());
         final HttpStatusCode status = getHttpStatusCodeFromSystemException(e);
         return createProblemDetail(e, status);
 

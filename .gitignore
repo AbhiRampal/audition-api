@@ -1,0 +1,9 @@
+
+*.lock
+*.bin
+*.properties
+*.probe
+*.class
+*.exec
+.idea/*
+build/*

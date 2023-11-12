@@ -10,6 +10,7 @@ class AuditionApplicationTests {
 
     @Test
     void contextLoads() {
+        AuditionApplication.main(new String[]{});
     }
 
 }

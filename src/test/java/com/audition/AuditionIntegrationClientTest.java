@@ -2,10 +2,13 @@ package com.audition;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.withStatus;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
+import com.audition.common.exception.SystemException;
 import com.audition.integration.AuditionIntegrationClient;
 import com.audition.model.AuditionPost;
 import com.audition.model.AuditionPostComment;
@@ -14,6 +17,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.RestTemplate;
@@ -85,7 +89,7 @@ public class AuditionIntegrationClientTest {
     public void testGetCommentsForPost_PathVar() {
         mockServer.expect(requestTo(AuditionIntegrationClient.getCommentsQueryParamURL + "?postId=1"))
             .andRespond(withSuccess(
-                "[{\"postId\":1,\"id\":1,\"name\":\"test name\",\"email\":\"test email\",\"body\":\"test body\"}]",
+                "[{\"postId\":1,\"id\":1,\"name\":\"test name\",\"email\":\"test email\",\"body\":\"test body test body test body test body\"}]",
                 MediaType.APPLICATION_JSON));
 
         List<AuditionPostComment> comments = auditionIntegrationClient.getCommentsForPost("1");
@@ -96,7 +100,7 @@ public class AuditionIntegrationClientTest {
         assertEquals(1, comments.get(0).getId());
         assertEquals("test name", comments.get(0).getName());
         assertEquals("test email", comments.get(0).getEmail());
-        assertEquals("test body", comments.get(0).getBody());
+        assertEquals("test body test body test body test body", comments.get(0).getBody());
     }
 
     @Test
@@ -115,6 +119,29 @@ public class AuditionIntegrationClientTest {
         assertEquals("test name", comments.get(0).getName());
         assertEquals("test email", comments.get(0).getEmail());
         assertEquals("test body", comments.get(0).getBody());
+    }
+
+
+    @Test
+    public void testGetCommentsThrows500() {
+        mockServer.expect(requestTo(AuditionIntegrationClient.getCommentsQueryParamURL + "?postId=1"))
+            .andRespond(withStatus(HttpStatus.INTERNAL_SERVER_ERROR));
+
+        assertThrows(SystemException.class,
+            () -> {
+                auditionIntegrationClient.getCommentsForPost("1");
+            });
+    }
+
+    @Test
+    public void testGetCommentsThrows404() {
+        mockServer.expect(requestTo(AuditionIntegrationClient.getCommentsQueryParamURL + "?postId=1"))
+            .andRespond(withStatus(HttpStatus.NOT_FOUND));
+
+        assertThrows(SystemException.class,
+            () -> {
+                auditionIntegrationClient.getCommentsForPost("1");
+            });
     }
 }
 

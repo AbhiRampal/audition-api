@@ -6,6 +6,7 @@ import com.audition.model.AuditionPostComment;
 import java.util.Arrays;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.util.MultiValueMap;
@@ -21,9 +22,27 @@ public class AuditionIntegrationClient {
     private RestTemplate restTemplate;
 
     //TODO:Abhi: may be move this field to a properties file?
-    public static final String getPostsURL = "https://jsonplaceholder.typicode.com/posts";
-    public static final String getCommentsPathVarURL = "https://jsonplaceholder.typicode.com/{postId}/comments";
-    public static final String getCommentsQueryParamURL = "https://jsonplaceholder.typicode.com/comments";
+
+    public static String getPostsURL;
+
+    public static String getCommentsPathVarURL;
+
+    public static String getCommentsQueryParamURL;
+
+    @Value("${endpoint.get.posts}")
+    public void setGetPostsURL(String getPostsURL) {
+        this.getPostsURL = getPostsURL;
+    }
+
+    @Value("${endpoint.get.comments.pathVar}")
+    public void setGetCommentsPathVarURL(String getCommentsPathVarURL) {
+        this.getCommentsPathVarURL = getCommentsPathVarURL;
+    }
+
+    @Value("${endpoint.get.comments.queryParam}")
+    public void setGetCommentsQueryParamURL(String getCommentsQueryParamURL) {
+        this.getCommentsQueryParamURL = getCommentsQueryParamURL;
+    }
 
     public List<AuditionPost> getPosts(MultiValueMap<String, String> filters) {
         // TODO make RestTemplate call to get Posts from https://jsonplaceholder.typicode.com/posts

@@ -10,3 +10,10 @@ application:
     write-timeout: 5000
     connect-timeout: 5000
     response-timeout: 5000
+
+endpoint:
+  get:
+    posts: https://jsonplaceholder.typicode.com/posts
+    comments:
+      pathVar: https://jsonplaceholder.typicode.com/{postId}/comments
+      queryParam: https://jsonplaceholder.typicode.com/comments

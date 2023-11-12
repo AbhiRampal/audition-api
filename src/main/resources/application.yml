@@ -31,3 +31,10 @@ management:
 logging:
   pattern:
     level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
+
+endpoint:
+  get:
+    posts: https://jsonplaceholder.typicode.com/posts
+    comments:
+      pathVar: https://jsonplaceholder.typicode.com/{postId}/comments
+      queryParam: https://jsonplaceholder.typicode.com/comments
